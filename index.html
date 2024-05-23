@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind of Giovannozzi</title>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.11.0/dist/browser/view.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #mindmap {
+            width: 100%;
+            height: 80vh;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        #controls {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mind of Giovannozzi</h1>
+    <div id="controls">
+        <input type="file" id="fileInput" accept=".md">
+        <button id="loadButton">Charger le fichier</button>
+    </div>
+    <div id="mindmap"></div>
+
+    <script>
+        let fileContent = '';
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    fileContent = e.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        document.getElementById('loadButton').addEventListener('click', function() {
+            if (fileContent) {
+                const mindmapElement = document.getElementById('mindmap');
+
+                // Clear previous mindmap content
+                mindmapElement.innerHTML = '';
+
+                // Render new mindmap
+                markmap.Markmap.create(mindmapElement, null, fileContent);
+            } else {
+                alert('Veuillez d\'abord sélectionner un fichier Markdown.');
+            }
+        });
+    </script>
+</body>
+</html>
